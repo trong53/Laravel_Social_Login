@@ -21,7 +21,7 @@ class SocialAuthController extends Controller
         return Socialite::driver('facebook')->redirect();      
     }
 
-    // if login is well done, we will be redirected to our page callback to do this treatment below
+    // if the login is well done, we will be redirected to our page callback to do this treatment below
     public function facebookLoginHandle() {
         try {
             $userData = Socialite::driver('facebook')->user();      // ->stateless(). Get user data from facebook
