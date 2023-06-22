@@ -26,20 +26,9 @@ class SocialAuthController extends Controller
         try {
             $userData = Socialite::driver('facebook')->user();      // ->stateless(). Get user data from facebook
             // dd($userData);
-            $socialNetwork = 'facebook';
-            $user = User::updateOrCreate(                   // update or create an user
-                ['facebook_id'   => $userData->id],         // condition for finding the instance
-                [                                           // if found, update with the 2nd array
-                    'name'      => $userData->name,         // if not found, create with both 1er and 2nd arrays
-                    'nickname'  => $userData->nickname ?? '',                 
-                    'email'     => $this->emailHandler($userData->email, $socialNetwork)    
-                ]
-            );
 
-            // dd($user);
-            Auth::login($user);                             // login to our app with 'user' instance
-            $redirectTo = RouteServiceProvider::HOME ?? '/home';
-            return redirect($redirectTo);                   // redirect to Homepage of User
+            $provider = 'facebook';
+            return $this->loginHandle($provider, $userData);
 
         } catch (\Exception $e) {
             echo ($e->getMessage());                        // display the errors
@@ -57,19 +46,8 @@ class SocialAuthController extends Controller
         try {
             $userData = Socialite::driver('google')->user();      // ->stateless()
             
-            $socialNetwork = 'google';
-            $user = User::updateOrCreate(
-                ['google_id'   => $userData->id],           
-                [                                           
-                    'name'      => $userData->name,         
-                    'nickname'  => $userData->nickname ?? '',
-                    'email'     => $this->emailHandler($userData->email, $socialNetwork)    
-                ]
-            );
-            
-            Auth::login($user);
-            $redirectTo = RouteServiceProvider::HOME ?? '/home';
-            return redirect($redirectTo);
+            $provider = 'google';
+            return $this->loginHandle($provider, $userData);
 
         } catch (\Exception $e) {
             echo ($e->getMessage());
@@ -87,19 +65,8 @@ class SocialAuthController extends Controller
         try {
             $userData = Socialite::driver('github')->user();      // ->stateless()
             
-            $socialNetwork = 'github';
-            $user = User::updateOrCreate(
-                ['github_id'   => $userData->id],           
-                [                                           
-                    'name'      => $userData->name ?? 'github_client_'.$userData->id,
-                    'nickname'  => $userData->nickname ?? '',
-                    'email'     => $this->emailHandler($userData->email, $socialNetwork)    
-                ]
-            );    
-            
-            Auth::login($user);
-            $redirectTo = RouteServiceProvider::HOME ?? '/home';
-            return redirect($redirectTo);
+            $provider = 'github';
+            return $this->loginHandle($provider, $userData);
 
         } catch (\Exception $e) {
             echo ($e->getMessage());
@@ -108,9 +75,26 @@ class SocialAuthController extends Controller
 
     /************************* Functions Helpers *****************************/
 
-    public function emailHandler(string $email, string $socialNetwork) : string
+    public function emailHandler(string $email, string $provider) : string
     {
-        return "($socialNetwork)_$email";
+        return "($provider)_$email";
     }
 
+    public function loginHandle(string $provider, $userData)
+    {
+        $user = User::updateOrCreate(                       // update or create an user
+            [$provider.'_id'  => $userData->id],            // condition for finding the instance
+                                                            // if found, update with the 2nd array
+            [                                               // if not found, create with both 1er and 2nd arrays
+                'name'      => $userData->name ?? $provider.'_'.$userData->id,  
+                'nickname'  => $userData->nickname ?? null,
+                'email'     => $this->emailHandler($userData->email, $provider)    
+            ]
+        );    
+        
+        // dd($user);
+        Auth::login($user);                                     // login to our app with 'user' instance
+        $redirectTo = RouteServiceProvider::HOME ?? '/home';    // setup the path = homepage
+        return redirect($redirectTo);                           // redirect to Homepage of User
+    }
 }
