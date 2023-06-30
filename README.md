@@ -16,11 +16,15 @@
 
 ### Controller :
 
-![LoginHandle](https://github.com/trong53/Laravel_Social_Login/assets/107623849/dfa77c0b-ded2-49cd-adde-a2d5640b027f)
+![FacebookLogin](https://github.com/trong53/Laravel_Social_Login_and_RestfulAPI_with_Sanctum_Passport/assets/107623849/ce4a3471-23e4-4d1d-ab15-c28caa05d900)
+
 
 ### Database :
 
-![database](https://github.com/trong53/Laravel_Social_Login/assets/107623849/08048ff4-55b1-4db1-8666-8552b1d8f1c5)
+![database](https://github.com/trong53/Laravel_Social_Login_and_RestfulAPI_with_Sanctum_Passport/assets/107623849/fb693c18-3205-4b35-9c8e-5a138be034a3)
+
+************************************************************************************************************************************************************
+************************************************************************************************************************************************************
 
 # B. RESTFUL API + authentication by Tokens with Sanctum and Passport
 
