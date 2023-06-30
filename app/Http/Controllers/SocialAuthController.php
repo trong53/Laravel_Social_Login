@@ -8,6 +8,7 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Hash;
 
 class SocialAuthController extends Controller
 {
@@ -83,12 +84,14 @@ class SocialAuthController extends Controller
     public function loginHandle(string $provider, $userData)
     {
         $user = User::updateOrCreate(                       // update or create an user
-            [$provider.'_id'  => $userData->id],            // condition for finding the instance
-                                                            // if found, update with the 2nd array
-            [                                               // if not found, create with both 1er and 2nd arrays
+            [   'provider'     => $provider,                // condition for finding the instance
+                'provider_id'  => $userData->id             // if found, update with the 2nd array
+            ],                                              // if not found, create with both 1er and 2nd arrays                                           
+            [                                               
                 'name'      => $userData->name ?? $provider.'_'.$userData->id,  
                 'nickname'  => $userData->nickname ?? null,
-                'email'     => $this->emailHandler($userData->email, $provider)    
+                'email'     => $this->emailHandler($userData->email, $provider),
+                'password'  => Hash::make($provider.'_laravel')
             ]
         );    
         

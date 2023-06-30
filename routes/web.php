@@ -28,6 +28,9 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+
+// Social login with facebook, google, github and linkedin
+
 Route::prefix('/auth')->name('auth.')->middleware('guest')->group(function(){
     Route::get('facebook', [SocialAuthController::class, 'facebookRedirect'])->name('facebook');
     Route::get('facebook/callback', [SocialAuthController::class, 'facebookLoginHandle']);
@@ -41,3 +44,5 @@ Route::prefix('/auth')->name('auth.')->middleware('guest')->group(function(){
     Route::get('linkedin', [SocialAuthController::class, 'linkedinRedirect'])->name('linkedin');
     Route::get('linkedin/callback', [SocialAuthController::class, 'linkedinLoginHandle']);
 });
+
+
