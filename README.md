@@ -1,8 +1,8 @@
 # A. Laravel projet : Login via les sitewebs sociaux Facebook, Google, Github
 
-   ### 1. Login page : Using Laravel UI et Bootstrap
+   ### 1. Login page : Utiliser Laravel UI et Bootstrap
    
-   ### 2. Bouton "Login with ..." using Bootstrap et Font Awesome
+   ### 2. Bouton "Login with ..." utilisant Bootstrap et Font Awesome
    
    ### 3. Utiliser la librairie Socialite
    
